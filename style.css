@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  background: linear-gradient(
+    270deg,
+    hsl(141deg 75% 15%),
+    hsl(180deg 75% 25%),
+    hsl(141deg 75% 5%)
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 16s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #ffffff;
+}
+/* ...existing code... */
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.container-aplicativo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.music-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#informacoes-faixa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0 1rem 0;
+}
+
+#capitulo {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+#play-pause,
+#anterior,
+#proximo {
+  cursor: pointer;
+}
+
+#anterior,
+#proximo {
+  width: 40px;
+}
+
+#play-pause {
+  position: relative;
+  width: 60px;   /* ajuste conforme necessário */
+  height: 60px;  /* ajuste conforme necessário */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pause {
+  display: none;
+  
+}
+
+.tocando .play {
+  display: none;
+}
+
+.tocando .pause {
+  display: block;
+}
+
+#container-botoes {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#waveform {
+  width: 90%;
+  max-width: 500px;
+  height: 80px;
+  margin: 24px auto 0 auto;
+  background: transparent;
+}
