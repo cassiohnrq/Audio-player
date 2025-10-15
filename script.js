@@ -4,21 +4,15 @@ const botaoPlayPause = document.getElementById("play-pause");
 const botaoProximoCapitulo = document.getElementById("proximo");
 const botaoCapituloAnterior = document.getElementById("anterior");
 
-let arquivosAudio = [];
+// Lista de arquivos de áudio
+const arquivosAudio = [
+  "1.mp3",
+  "2.mp3",
+  "3.mp3"
+];
 let capitulo = 0;
 let taTocando = false;
 let wavesurfer;
-
-fetch('./audios.json')
-  .then(res => res.json())
-  .then(lista => {
-    arquivosAudio = lista;
-    if (arquivosAudio.length > 0) {
-      capitulo = 0;
-      carregarCapitulo(capitulo);
-      inicializarWaveSurfer();
-    }
-  });
 
 function carregarCapitulo(indice) {
   const nomeArquivo = arquivosAudio[indice];
@@ -81,6 +75,10 @@ function proximoCapitulo() {
   capitulo = (capitulo < arquivosAudio.length - 1) ? capitulo + 1 : 0;
   carregarCapitulo(capitulo);
 }
+
+// Inicialização
+carregarCapitulo(capitulo);
+inicializarWaveSurfer();
 
 botaoPlayPause.addEventListener("click", tocarOuPausarFaixa);
 botaoCapituloAnterior.addEventListener("click", capituloAnterior);
