@@ -54,7 +54,7 @@ function capituloAnterior() {
   }
 
   audio.src = "/audios/" + capitulo + ".mp3";
-  nomeCapitulo.innerText = "Capítulo " + capitulo;
+  nomeCapitulo.innerText = "Música " + capitulo;
   wavesurfer.load(audio.src);
 }
 
@@ -69,7 +69,7 @@ function proximoCapitulo() {
   }
 
   audio.src = "/audios/" + capitulo + ".mp3";
-  nomeCapitulo.innerText = "Capítulo " + capitulo;
+  nomeCapitulo.innerText = "Música " + capitulo;
   wavesurfer.load(audio.src);
 }
 
