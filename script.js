@@ -5,7 +5,7 @@ const botaoProximoCapitulo = document.getElementById("proximo");
 const botaoCapituloAnterior = document.getElementById("anterior");
 
 
-const quantidadeCapitulos = 10;
+const quantidadeCapitulos = 3;
 
 const wavesurfer = WaveSurfer.create({
   container: '#waveform',
