@@ -4,24 +4,51 @@ const botaoPlayPause = document.getElementById("play-pause");
 const botaoProximoCapitulo = document.getElementById("proximo");
 const botaoCapituloAnterior = document.getElementById("anterior");
 
-
-const quantidadeCapitulos = 3;
-
-const wavesurfer = WaveSurfer.create({
-  container: '#waveform',
-  waveColor: '#fff',
-  progressColor: '#00ffcc',
-  height: 80,
-  responsive: true,
-  barWidth: 2,
-  barGap: 2,
-  cursorWidth: 0, // Remove a linha de cursor
-});
-
-wavesurfer.load(audio.src);
-
+let arquivosAudio = [];
+let capitulo = 0;
 let taTocando = false;
-let capitulo = 1;
+let wavesurfer;
+
+fetch('./audios.json')
+  .then(res => res.json())
+  .then(lista => {
+    arquivosAudio = lista;
+    if (arquivosAudio.length > 0) {
+      capitulo = 0;
+      carregarCapitulo(capitulo);
+      inicializarWaveSurfer();
+    }
+  });
+
+function carregarCapitulo(indice) {
+  const nomeArquivo = arquivosAudio[indice];
+  audio.src = "audios/" + nomeArquivo;
+  nomeCapitulo.innerText = nomeArquivo;
+  if (wavesurfer) {
+    wavesurfer.load(audio.src);
+  }
+}
+
+function inicializarWaveSurfer() {
+  wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: '#fff',
+    progressColor: '#00ffcc',
+    height: 80,
+    responsive: true,
+    barWidth: 2,
+    barGap: 2,
+    cursorWidth: 0,
+  });
+  wavesurfer.load(audio.src);
+
+  audio.addEventListener('play', () => wavesurfer.play());
+  audio.addEventListener('pause', () => wavesurfer.pause());
+  audio.addEventListener('seeked', () => wavesurfer.seekTo(audio.currentTime / audio.duration));
+  wavesurfer.on('seek', (progress) => {
+    audio.currentTime = progress * audio.duration;
+  });
+}
 
 function tocarFaixa() {
   audio.play();
@@ -36,57 +63,26 @@ function pausarFaixa() {
 }
 
 function tocarOuPausarFaixa() {
-  if (taTocando === true) {
+  if (taTocando) {
     pausarFaixa();
   } else {
     tocarFaixa();
   }
 }
 
-
 function capituloAnterior() {
   pausarFaixa();
-
-  if (capitulo === 1) {
-    capitulo = quantidadeCapitulos;
-  } else {
-    capitulo -= 1;
-  }
-
-  audio.src = "/audios/" + capitulo + ".mp3";
-  nomeCapitulo.innerText = "Música " + capitulo;
-  wavesurfer.load(audio.src);
+  capitulo = (capitulo === 0) ? arquivosAudio.length - 1 : capitulo - 1;
+  carregarCapitulo(capitulo);
 }
-
 
 function proximoCapitulo() {
   pausarFaixa();
-
-  if (capitulo < quantidadeCapitulos) {
-    capitulo += 1;
-  } else {
-    capitulo = 1;
-  }
-
-  audio.src = "/audios/" + capitulo + ".mp3";
-  nomeCapitulo.innerText = "Música " + capitulo;
-  wavesurfer.load(audio.src);
+  capitulo = (capitulo < arquivosAudio.length - 1) ? capitulo + 1 : 0;
+  carregarCapitulo(capitulo);
 }
-
-
-
-// Sincronize play/pause com o player principal
-audio.addEventListener('play', () => wavesurfer.play());
-audio.addEventListener('pause', () => wavesurfer.pause());
-audio.addEventListener('seeked', () => wavesurfer.seekTo(audio.currentTime / audio.duration));
-
-// Sincronize o tempo do audio com o wavesurfer
-wavesurfer.on('seek', (progress) => {
-  audio.currentTime = progress * audio.duration;
-});
 
 botaoPlayPause.addEventListener("click", tocarOuPausarFaixa);
 botaoCapituloAnterior.addEventListener("click", capituloAnterior);
 botaoProximoCapitulo.addEventListener("click", proximoCapitulo);
-
 audio.addEventListener("ended", proximoCapitulo);
