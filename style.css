@@ -114,3 +114,11 @@ button {
   margin: 24px auto 0 auto;
   background: transparent;
 }
+
+.capa{
+  width: 250px;
+  height: 250px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}
